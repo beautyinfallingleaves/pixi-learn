@@ -1,26 +1,28 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { fetchUsers } from '../redux/users'
 
-const Users = props => {
-  useEffect(() => {
-    props.fetchUsersThunkCreator()
-  })
+class Users extends React.Component {
+  componentDidMount() {
+    this.props.fetchUsersThunkCreator()
+  }
 
-  const users = props.users
+  render() {
+    const users = this.props.users
 
-  return (
-    <div>
-      <h1>ALL USERS:</h1>
-      {users.map(user => {
-        return (
-          <div key={user.id}>
-            {user.firstName} {user.lastName}
-          </div>
-        )
-      })}
-    </div>
-  )
+    return (
+      <div>
+        <h1>ALL USERS:</h1>
+        {users.map(user => {
+          return (
+            <div key={user.id}>
+              {user.firstName} {user.lastName}
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = state => ({
