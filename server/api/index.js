@@ -1,10 +1,10 @@
-const router = require('express').Router
+const router = require('express').Router()
 
 // dedicated router namespaces
 router.use('/users', require('./users'))
 
 router.use((req, res, next) => {
-  const err = new Error('Resource not found.')
+  const err = new Error('API route not found.')
   err.status = 404
   next(err)
 })

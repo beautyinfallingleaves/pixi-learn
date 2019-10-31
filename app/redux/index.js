@@ -4,10 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
 // Import individual reducers for combining
-import dummies from './dummies'
+import users from './users'
 
 const appReducer = combineReducers({
-  dummies,
+  users,
 })
 
 let middleware = [

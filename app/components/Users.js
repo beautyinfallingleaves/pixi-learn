@@ -1,0 +1,30 @@
+import React from 'react'
+import { connect } from 'react-redux'
+import { fetchUsers } from '../redux/users'
+
+const Users = props => {
+  const users = props.users
+
+  return (
+    <div>
+      <h1>ALL USERS:</h1>
+      {users.map(user => {
+        return (
+          <div key={user.id}>
+            {user.firstName} {user.lastName}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const mapStateToProps = state => ({
+  users: state.users,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchUsersThunkCreator: () => dispatch(fetchUsers())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Users)

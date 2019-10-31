@@ -6,19 +6,19 @@ const app = express()
 const morgan = require('morgan')
 app.use(morgan('dev'))
 
-// Static assets directory
-const path = require('path')
-app.use(express.static(path.join(__dirname, '../public')))
-
 // Body parsing middleware
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// API routes
-// app.use('/api', require('./api'))
+// Static assets directory
+const path = require('path')
+app.use(express.static(path.join(__dirname, '../public')))
 
-// Serve index html
+// API routes
+app.use('/api', require('./api'))
+
+// Serve index html for any non-API requests
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 })
