@@ -3,7 +3,7 @@
 const { resolve } = require('path')
 
 module.exports = {
-  entry: ['babel-polyfill', './app/index'],
+  entry: ['babel-polyfill', './app/index.js'],
   output: {
     path: __dirname,
     filename: './public/bundle.js'
@@ -18,8 +18,14 @@ module.exports = {
     rules: [
       {
         test: /jsx?$/,
+        exclude: /node_modules/,
         include: resolve(__dirname, './app'),
-        loader: 'babel-loader'
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react']
+          }
+        }
       },
       {
         test: /\.css$/,

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchUsers } from '../redux/users'
 
 const Users = props => {
+  useEffect(() => {
+    props.fetchUsersThunkCreator()
+  })
+
   const users = props.users
 
   return (
