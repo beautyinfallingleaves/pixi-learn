@@ -15,6 +15,21 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const path = require('path')
 app.use(express.static(path.join(__dirname, '../public')))
 
+// Session middleware - including persistent session storage
+const session = require('express-session')
+
+const { db } = require('./db')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
+const dbStore = new SequelizeStore({ db: db })
+dbStore.sync()
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'a not-so-secret secret',
+  store: dbStore,
+  resave: false,
+  saveUninitialized: false,
+}))
+
 // API routes
 app.use('/api', require('./api'))
 
