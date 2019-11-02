@@ -1,7 +1,7 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-// import { logout } from ../redux/loggedInUser
+import { logout } from '../redux/user'
 
 const NavBar = ({ handleClick, isLoggedIn }) => {
   return (
@@ -33,10 +33,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleClick() {
-      console.log('Will Log Out!')
-      // dispatch(logout())
+      dispatch(logout(this.props.history))
     }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NavBar))
