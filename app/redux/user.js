@@ -37,7 +37,7 @@ export const auth = (email, password, method, history) => async (dispatch) => {
 
   try {
     dispatch(setUser(res.data))
-    history.pushState('/home')
+    if (history) history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }
@@ -45,9 +45,9 @@ export const auth = (email, password, method, history) => async (dispatch) => {
 
 export const logout = (history) => async (dispatch) => {
   try {
-    await axios.post('/auth/logout')
+    await axios.delete('/auth/local/logout')
     dispatch(removeUser())
-    history.pushState('/login')
+    if (history) history.push('/login')
   } catch (err) {
     console.error(err)
   }

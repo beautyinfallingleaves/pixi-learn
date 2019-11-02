@@ -33,7 +33,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleClick() {
-      dispatch(logout(this.props.history))
+      dispatch(logout())
     }
   }
 }
