@@ -26,6 +26,12 @@ const User = db.define('user', {
       notEmpty: true,
     }
   },
+  imageUrl: {
+    type: Sequelize.STRING,
+    validate: {
+      isUrl: { msg: 'Invalid URL'}
+    }
+  },
   password: {
     type: Sequelize.STRING,
   },
