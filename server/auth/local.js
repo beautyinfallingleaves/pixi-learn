@@ -3,6 +3,7 @@ const User = require('../db/user')
 
 // User Signup
 router.post('/signup', async (req, res, next) => {
+  console.log('route reached: /auth/local/signup')
   try {
     const user = await User.create(req.body)
     req.login(user, err => {

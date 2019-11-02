@@ -4,7 +4,7 @@ const db = require('./database')
 
 const User = require('./user')
 
-// TODO - establish associations between models
+// Model associations below
 
 module.exports = {
   db,

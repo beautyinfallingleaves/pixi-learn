@@ -26,17 +26,20 @@ const User = db.define('user', {
       notEmpty: true,
     }
   },
-//   password: {
-//     type: Sequelize.STRING,
-//   },
-//   salt: {
-//     type: Sequelize.STRING,
-//   }
-// }, {
-//   hooks: {
-//     beforeCreate: setSaltAndPassword,
-//     beforeUpdate: setSaltAndPassword,
-//   }
+  password: {
+    type: Sequelize.STRING,
+  },
+  salt: {
+    type: Sequelize.STRING,
+  },
+  googleId: {
+    type: Sequelize.STRING
+  },
+}, {
+  hooks: {
+    beforeCreate: setSaltAndPassword,
+    beforeUpdate: setSaltAndPassword,
+  }
 })
 
 // Instance methods
@@ -54,7 +57,7 @@ User.generateSalt = function () {
 }
 
 User.encryptPassword = function (plainText, salt) {
-  const hash = crypto.createHash('sha1');
+  const hash = crypto.createHash('RSA-SHA256');
   hash.update(plainText);
   hash.update(salt);
   return hash.digest('hex');

@@ -17,12 +17,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /(jsx|js)?$/,
+        test: /jsx?$/,
         include: resolve(__dirname, './app'),
         loader: 'babel-loader',
-        options: {
-          presets: ['react']
-        }
       },
       {
         test: /\.css$/,
