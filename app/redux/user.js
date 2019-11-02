@@ -45,7 +45,7 @@ export const auth = (email, password, method, history) => async (dispatch) => {
 
 export const logout = (history) => async (dispatch) => {
   try {
-    await axios.delete('/auth/local/logout')
+    await axios.post('/auth/local/logout')
     dispatch(removeUser())
     if (history) history.push('/login')
   } catch (err) {
@@ -58,6 +58,8 @@ const user = (state = initialState, action) => {
   switch (action.type) {
     case SET_USER:
       return action.user
+    case REMOVE_USER:
+      return initialState
     default:
       return state
   }

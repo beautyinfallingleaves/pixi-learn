@@ -23,7 +23,7 @@ router.post('/signup', async (req, res, next) => {
 })
 
 // User Login
-router.put('/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
@@ -50,7 +50,8 @@ router.put('/login', async (req, res, next) => {
 })
 
 // User Logout
-router.delete('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
+  console.log('in Logout API route')
   req.logOut()
   req.session.destroy()
   res.redirect('/')
