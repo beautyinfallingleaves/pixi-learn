@@ -13,14 +13,12 @@ export const setUsers = (users) => ({
 })
 
 // ****** THUNK CREATIORS ******
-export const fetchUsers = () => {
-  return async (dispatch) => {
-    try {
-      const {data} = await axios.get('/api/users')
-      dispatch(setUsers(data))
-    } catch (err) {
-      console.log('Error fetching users.')
-    }
+export const fetchUsers = () => async (dispatch) => {
+  try {
+    const {data} = await axios.get('/api/users')
+    dispatch(setUsers(data))
+  } catch (err) {
+    console.error(err)
   }
 }
 

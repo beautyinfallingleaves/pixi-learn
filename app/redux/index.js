@@ -4,9 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
 // Import individual reducers for combining
+import user from './user'
 import users from './users'
 
 const appReducer = combineReducers({
+  user,
   users,
 })
 

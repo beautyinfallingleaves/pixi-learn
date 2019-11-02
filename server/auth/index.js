@@ -6,4 +6,9 @@ router.use('/local', localRouter)
 
 router.use('/google', googleRouter)
 
+// Get Me
+router.get('/me', (req, res) => {
+  res.json(req.user)
+})
+
 module.exports = router
