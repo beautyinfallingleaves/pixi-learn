@@ -9,8 +9,8 @@
     "postinstall": "touch secrets.js",
     "seed": "node seed.js",
     "start": "echo 'Running server for production - developers, use npm run start-dev for development' && node server/index.js",
-    "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server",
-    "start-server": "nodemon -e js,html,css --ignore public --ignore app server/index.js"
+    "start-dev": "npm run build-client-watch & npm run start-server",
+    "start-server": "NODE_ENV=development nodemon -e js,html,css --ignore public --ignore app server/index.js"
   },
   "keywords": [
     "react",

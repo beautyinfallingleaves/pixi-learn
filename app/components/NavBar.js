@@ -22,7 +22,8 @@ class NavBar extends React.Component {
             <div>
               <NavLink to="/home">Home</NavLink>
               <a href="#" onClick={this.handleLogout}>Logout</a>
-              <p>Logged in as {user}</p>
+              <p>Logged in as {user.email}</p>
+              <img src={user.imageUrl} alt="User's profile photo." />
             </div>
           ) : (
             <div>
@@ -39,7 +40,7 @@ class NavBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user.email,
+    user: state.user,
     isLoggedIn: !!state.user.id
   }
 }

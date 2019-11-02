@@ -12,6 +12,10 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const dbStore = new SequelizeStore({ db: db })
 dbStore.sync()
 
+// Import secrets
+console.log('Node environment: ', process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'development') require('../../secrets')
+
 app.use(session({
   secret: process.env.SESSION_SECRET || 'a not-so-secret secret',
   store: dbStore,
