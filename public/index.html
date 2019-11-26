@@ -4,10 +4,12 @@
   <meta charset="utf-8">
   <title>Hello World</title>
   <style>* {padding: 0; margin: 0}</style>
+  <script defer src="bundle.js"></script>
 </head>
-  <script src="pixi/pixi.min.js"></script>
+<!-- <script src="pixi/pixi.min.js"></script> -->
 <body>
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
+    // default to using WebGL but fall back on canvas if WebGL not supported
     let type = "WebGL"
     if(!PIXI.utils.isWebGLSupported()){
       type = "canvas"
@@ -15,7 +17,7 @@
 
     PIXI.utils.sayHello(type)
 
-    // Aliases
+    // Aliases for DRY code
     let Application = PIXI.Application,
         loader = PIXI.loader,
         resources = PIXI.loader.resources,
@@ -23,18 +25,11 @@
 
     let app = new Application({width: 768, height: 640});
 
-    //Add the canvas that Pixi automatically created for you to the HTML document
+    //Add the canvas that PIXI automatically created for you to the HTML document
     document.body.appendChild(app.view);
 
-    // THIS IS FOR FULL SCREEN SCALING
-    // app.renderer.view.style.position = "absolute";
-    // app.renderer.view.style.display = "block";
-    // app.renderer.autoResize = true;
-    // app.renderer.resize(window.innerWidth, window.innerHeight);
-
-    // load an image and run the callback when it's done
+    // load raw images into PIXI's texture cash and run the callback when done
     const spritePath = './pixi/images'
-
     loader
       .add([
         `${spritePath}/island_scene.gif`,
@@ -48,7 +43,7 @@
     }
 
     // declare to-be-Sprite names outside setup() so they can be reused in various fns
-    let boat
+    let boat, fish
 
     // declare game state variable outside setup() as well
     let pixiGameState
@@ -80,14 +75,27 @@
       pixiGameState()
     }
 
+
     function play() {
+      // ***********************************
+      // TO DO!! - in FishSim, we'll iterate through boat move reel and manipulate
+      // boat vx & vy to move each boat between nodes in its move reel
       boat.vx = 0.5
       boat.vy = 0.5
 
       boat.x += boat.vx
       boat.y += boat.vy
+
+      // ***********************************
+      // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
+      // spriteTwo) to detect collision of boat & fishes
+      // if (hitTestRectangle(boat, fish)) {
+        //begin collecting fish
+      // } else {
+        //There's no collision
+      // }
     }
 
-  </script>
+  </script> -->
 </body>
 </html>
