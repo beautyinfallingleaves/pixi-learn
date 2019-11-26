@@ -1,12 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>-= PROJECT TITLE PLACEHOLDER =-</title>
-  <script src="/bundle.js" defer></script>
+  <meta charset="utf-8">
+  <title>Hello World</title>
+  <style>* {padding: 0; margin: 0}</style>
 </head>
+  <script src="pixi/pixi.min.js"></script>
 <body>
-  <div id="app"></div>
+  <script type="text/javascript">
+    let type = "WebGL"
+    if(!PIXI.utils.isWebGLSupported()){
+      type = "canvas"
+    }
+
+    PIXI.utils.sayHello(type)
+
+    // Aliases
+    let Application = PIXI.Application,
+        loader = PIXI.loader,
+        resources = PIXI.loader.resources,
+        Sprite = PIXI.Sprite
+
+    let app = new Application({width: 768, height: 640});
+
+    //Add the canvas that Pixi automatically created for you to the HTML document
+    document.body.appendChild(app.view);
+
+    // THIS IS FOR FULL SCREEN SCALING
+    // app.renderer.view.style.position = "absolute";
+    // app.renderer.view.style.display = "block";
+    // app.renderer.autoResize = true;
+    // app.renderer.resize(window.innerWidth, window.innerHeight);
+
+    // load an image and run the callback when it's done
+    const spritePath = './pixi/images'
+
+    loader
+      .add([
+        `${spritePath}/island_scene.gif`,
+        `${spritePath}/boat.png`,
+      ])
+      .on('progress', loadProgressHandler) // this can be leveraged for a loading progress bar
+      .load(setup)
+
+    function loadProgressHandler() {
+      console.log('loading')
+    }
+
+    // declare to-be-Sprite names outside setup() so they can be reused in various fns
+    let boat
+
+    // declare game state variable outside setup() as well
+    let pixiGameState
+
+    function setup() {
+      // create a Sprite from a texture
+      let island_scene = new Sprite(resources[`${spritePath}/island_scene.gif`].texture)
+      boat = new Sprite(resources[`${spritePath}/boat.png`].texture)
+
+      // init position and velocity
+      boat.position.set(32, 32)
+      boat.vx = 0
+      boat.vy = 0
+
+      // add it to the stage
+      app.stage.addChild(island_scene)
+      app.stage.addChild(boat)
+
+      // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
+      pixiGameState = play;
+
+      // start a 60fps game cycle
+      app.ticker.add(() => gameLoop())
+    }
+
+    // animation loop- 60fps
+    function gameLoop() {
+      // 60 times per second, run the function bound to pixi game state
+      pixiGameState()
+    }
+
+    function play() {
+      boat.vx = 0.5
+      boat.vy = 0.5
+
+      boat.x += boat.vx
+      boat.y += boat.vy
+    }
+
+  </script>
 </body>
 </html>
