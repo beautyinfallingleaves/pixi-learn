@@ -1,11 +1,14 @@
+/* eslint-disable camelcase */
 import * as PIXI from 'pixi.js';
-import { keyboard } from './utils';
+import { keyboard, hitTestRectangle } from './utils';
 
 // default to using WebGL but fall back on canvas if WebGL not supported
 let type = 'WebGL';
 if (!PIXI.utils.isWebGLSupported()) {
   type = 'canvas';
 }
+
+const TILE_SIZE = 32
 
 PIXI.utils.sayHello(type);
 
@@ -22,7 +25,11 @@ document.body.appendChild(app.view);
 // load raw images into PIXI's texture cash and run the callback when done
 const spritePath = './pixi/images';
 loader
-  .add([`${spritePath}/island_scene.gif`, `${spritePath}/boat.png`])
+  .add([
+    `${spritePath}/island_scene.gif`,
+    `${spritePath}/boat.png`,
+    `${spritePath}/fishes.png`
+  ])
   .on('progress', loadProgressHandler) // this can be leveraged for a loading progress bar
   .load(setup);
 
@@ -31,25 +38,43 @@ function loadProgressHandler() {
 }
 
 // declare to-be-Sprite names outside setup() so they can be reused in various fns
-let boat, fish;
+let island_scene, boat, fishes1, fishes2;
+
+// init an empty array for storing all fishes
+const fishes = []
 
 // declare game state variable outside setup() as well
 let pixiGameState;
 
 function setup() {
   // create a Sprite from a texture
-  let island_scene = new Sprite(
+  island_scene = new Sprite(
     resources[`${spritePath}/island_scene.gif`].texture
   );
   boat = new Sprite(resources[`${spritePath}/boat.png`].texture);
+  fishes1 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
+  fishes2 = new Sprite(resources[`${spritePath}/fishes.png`].texture)
 
-  // init position, velocity, and moveReelStart coords
+  // init boat
   boat.position.set(32, 32);
+  boat.fishes = 0
   boat.vx = 0;
   boat.vy = 0;
 
-  // add it to the stage
+  // init fishes
+  fishes1.position.set(3 * TILE_SIZE, 7 * TILE_SIZE)
+  fishes1.quantity = 500
+  fishes2.position.set(14 * TILE_SIZE, 18 * TILE_SIZE)
+  fishes2.quantity = 350
+
+  // put fishes in fishes array
+  fishes.push(fishes1)
+  fishes.push(fishes2)
+
+  // add sprites to the stage - order matters! for depth sorting
   app.stage.addChild(island_scene);
+  app.stage.addChild(fishes1)
+  app.stage.addChild(fishes2)
   app.stage.addChild(boat);
 
   // init the gamestate to 'play'. Gameloop will run the current gamestate as a fn
@@ -61,9 +86,8 @@ function setup() {
 
 // init an empty array for capturing move reel
 const moveReel = []
-const TILE_SIZE = 32
 
-//capture keyboard arrow keys
+//capture keyboard arrow keys for moving the boat, for now
 let left = keyboard('ArrowLeft'),
   up = keyboard('ArrowUp'),
   right = keyboard('ArrowRight'),
@@ -121,19 +145,19 @@ function gameLoop() {
 
 function play() {
   if (moveReel.length > 0 ) {
-    // set boat's first target to the first frame in the moveReel
+    // set boat's target to the first frame in the moveReel
     const targetX = moveReel[0].targetX
     const targetY = moveReel[0].targetY
 
-    // speed is set to 0.5 for nice slow movement
+    // speed is set to 0.5 for nice slow movement; higher for faster testing
     boat.vx = Math.sign(targetX - boat.x) * 0.5
     boat.vy = Math.sign(targetY - boat.y) * 0.5
 
     // useful console logs to see wassup
-    console.log(moveReel[0])
-    console.log('targetX ', targetX, 'targetY', targetY )
-    console.log('boat x ', boat.x, 'boat y', boat.y)
-    console.log('boat vx ', boat.vx, 'boat vy, ', boat.vy)
+    // console.log(moveReel[0])
+    // console.log('targetX ', targetX, 'targetY', targetY )
+    // console.log('boat x ', boat.x, 'boat y', boat.y)
+    // console.log('boat vx ', boat.vx, 'boat vy, ', boat.vy)
 
     if (boat.x !== targetX || boat.y !== targetY) {
       // move the boat until it reaches the destination for this moveReel frame
@@ -151,9 +175,18 @@ function play() {
   // TO DO!! - in FishSim, we can add a hitTestRectangle(spriteOne,
   // spriteTwo) to detect collision of boat & fishes
 
-  // if (hitTestRectangle(boat, fish)) {
-  //begin collecting fish
-  // } else {
-  //There's no collision
-  // }
+  fishes.forEach(fish => {
+    if (hitTestRectangle(boat, fish)) {
+      // begin collecting fish
+      if (fish.quantity > 0) {
+        boat.fishes++
+        fish.quantity--
+      } else {
+        app.stage.removeChild(fish)
+      }
+      console.log('boat fishes: ', boat.fishes, 'fishes1 qty: ', fishes1.quantity, 'fishes2 qty: ', fishes2.quantity)
+    } else {
+      // There's no collision
+    }
+  })
 }
